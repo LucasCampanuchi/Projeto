@@ -5,7 +5,11 @@ import '../pages/home_page/view/home_page.dart';
 import '../pages/login_page/view/login_page.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool isLogged;
+  const MyApp({
+    super.key,
+    required this.isLogged,
+  });
 
   // This widget is the root of your application.
   @override
@@ -15,6 +19,7 @@ class MyApp extends StatelessWidget {
       theme: appTheme,
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.light,
+      initialRoute: isLogged ? '/home' : '/',
       routes: {
         '/': (context) => const LoginPage(),
         '/home': (context) => const HomePage(),

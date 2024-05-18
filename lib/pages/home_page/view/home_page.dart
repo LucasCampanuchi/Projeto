@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_teste/api/constants.dart';
 import 'package:projeto_teste/pages/home_page/components/card_news.dart';
 import 'package:projeto_teste/pages/home_page/components/header_news.dart';
 import 'package:projeto_teste/pages/home_page/store/home_page.store.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:projeto_teste/services/shared_preferences.service.dart';
+import 'package:projeto_teste/shared/confirm_dialog.dart';
 
-import '../../../components/image_widget.dart';
 import '../components/card_news_skeleton.dart';
 
 class HomePage extends StatefulWidget {
@@ -46,7 +46,17 @@ class _HomePageState extends State<HomePage> {
               color: Colors.white,
             ),
             onPressed: () {
-              Navigator.pushNamed(context, '/settings');
+              confirmDialog(context, 'Deseja realmente sair?', () {
+                SharedPreferencesService sharedPreferencesService =
+                    SharedPreferencesService();
+                sharedPreferencesService.deleteData('logged');
+
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  '/',
+                  (route) => false,
+                );
+              });
             },
           ),
         ],

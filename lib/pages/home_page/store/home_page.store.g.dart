@@ -25,6 +25,22 @@ mixin _$HomePageStore on _HomePageStoreBase, Store {
     });
   }
 
+  late final _$newsListAtom =
+      Atom(name: '_HomePageStoreBase.newsList', context: context);
+
+  @override
+  ObservableList<NewsModel> get newsList {
+    _$newsListAtom.reportRead();
+    return super.newsList;
+  }
+
+  @override
+  set newsList(ObservableList<NewsModel> value) {
+    _$newsListAtom.reportWrite(value, super.newsList, () {
+      super.newsList = value;
+    });
+  }
+
   late final _$loadingAtom =
       Atom(name: '_HomePageStoreBase.loading', context: context);
 
@@ -41,6 +57,38 @@ mixin _$HomePageStore on _HomePageStoreBase, Store {
     });
   }
 
+  late final _$pageAtom =
+      Atom(name: '_HomePageStoreBase.page', context: context);
+
+  @override
+  int get page {
+    _$pageAtom.reportRead();
+    return super.page;
+  }
+
+  @override
+  set page(int value) {
+    _$pageAtom.reportWrite(value, super.page, () {
+      super.page = value;
+    });
+  }
+
+  late final _$searchControllerAtom =
+      Atom(name: '_HomePageStoreBase.searchController', context: context);
+
+  @override
+  TextEditingController get searchController {
+    _$searchControllerAtom.reportRead();
+    return super.searchController;
+  }
+
+  @override
+  set searchController(TextEditingController value) {
+    _$searchControllerAtom.reportWrite(value, super.searchController, () {
+      super.searchController = value;
+    });
+  }
+
   late final _$getNewsAsyncAction =
       AsyncAction('_HomePageStoreBase.getNews', context: context);
 
@@ -49,11 +97,28 @@ mixin _$HomePageStore on _HomePageStoreBase, Store {
     return _$getNewsAsyncAction.run(() => super.getNews());
   }
 
+  late final _$_HomePageStoreBaseActionController =
+      ActionController(name: '_HomePageStoreBase', context: context);
+
+  @override
+  void init() {
+    final _$actionInfo = _$_HomePageStoreBaseActionController.startAction(
+        name: '_HomePageStoreBase.init');
+    try {
+      return super.init();
+    } finally {
+      _$_HomePageStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
 news: ${news},
-loading: ${loading}
+newsList: ${newsList},
+loading: ${loading},
+page: ${page},
+searchController: ${searchController}
     ''';
   }
 }
