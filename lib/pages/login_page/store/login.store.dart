@@ -26,35 +26,45 @@ abstract class _LoginStoreBase with Store {
     showPassword = !showPassword;
   }
 
+  @observable
+  bool loading = false;
+
   @action
-  void login(BuildContext context) {
-    {
-      if (formKey.currentState!.validate()) {
-        if (emailController.text != 'teste@gmail.com' &&
-            passwordController.text != '123456') {
-          message(
-            'Email ou senha inválidos',
-          );
-
-          return;
-        }
-
-        SharedPreferencesService sharedPreferencesService =
-            SharedPreferencesService();
-
-        sharedPreferencesService.saveData(
-          'logged',
-          'true',
+  Future<void> login(BuildContext context) async {
+    if (formKey.currentState!.validate()) {
+      if (emailController.text != 'teste@gmail.com' &&
+          passwordController.text != '123456') {
+        message(
+          'Email ou senha inválidos',
         );
 
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HomePage(),
-          ),
-          (route) => false,
-        );
+        return;
       }
+
+      loading = true;
+
+      await Future.delayed(
+        const Duration(milliseconds: 1200),
+      );
+
+      loading = false;
+
+      SharedPreferencesService sharedPreferencesService =
+          SharedPreferencesService();
+
+      sharedPreferencesService.saveData(
+        'logged',
+        'true',
+      );
+
+      Navigator.pushAndRemoveUntil(
+        // ignore: use_build_context_synchronously
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomePage(),
+        ),
+        (route) => false,
+      );
     }
   }
 }

@@ -73,6 +73,30 @@ mixin _$LoginStore on _LoginStoreBase, Store {
     });
   }
 
+  late final _$loadingAtom =
+      Atom(name: '_LoginStoreBase.loading', context: context);
+
+  @override
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
+    });
+  }
+
+  late final _$loginAsyncAction =
+      AsyncAction('_LoginStoreBase.login', context: context);
+
+  @override
+  Future<void> login(BuildContext context) {
+    return _$loginAsyncAction.run(() => super.login(context));
+  }
+
   late final _$_LoginStoreBaseActionController =
       ActionController(name: '_LoginStoreBase', context: context);
 
@@ -88,23 +112,13 @@ mixin _$LoginStore on _LoginStoreBase, Store {
   }
 
   @override
-  void login(BuildContext context) {
-    final _$actionInfo = _$_LoginStoreBaseActionController.startAction(
-        name: '_LoginStoreBase.login');
-    try {
-      return super.login(context);
-    } finally {
-      _$_LoginStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
 formKey: ${formKey},
 emailController: ${emailController},
 passwordController: ${passwordController},
-showPassword: ${showPassword}
+showPassword: ${showPassword},
+loading: ${loading}
     ''';
   }
 }
