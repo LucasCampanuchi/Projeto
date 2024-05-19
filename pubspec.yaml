@@ -48,6 +48,8 @@ dependencies:
   skeletonizer: ^1.1.2+1
   url_launcher: ^6.2.6
   shared_preferences: ^2.2.3
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:

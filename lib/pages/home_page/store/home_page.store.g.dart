@@ -89,6 +89,38 @@ mixin _$HomePageStore on _HomePageStoreBase, Store {
     });
   }
 
+  late final _$fromDateAtom =
+      Atom(name: '_HomePageStoreBase.fromDate', context: context);
+
+  @override
+  String? get fromDate {
+    _$fromDateAtom.reportRead();
+    return super.fromDate;
+  }
+
+  @override
+  set fromDate(String? value) {
+    _$fromDateAtom.reportWrite(value, super.fromDate, () {
+      super.fromDate = value;
+    });
+  }
+
+  late final _$toDateAtom =
+      Atom(name: '_HomePageStoreBase.toDate', context: context);
+
+  @override
+  String? get toDate {
+    _$toDateAtom.reportRead();
+    return super.toDate;
+  }
+
+  @override
+  set toDate(String? value) {
+    _$toDateAtom.reportWrite(value, super.toDate, () {
+      super.toDate = value;
+    });
+  }
+
   late final _$getNewsAsyncAction =
       AsyncAction('_HomePageStoreBase.getNews', context: context);
 
@@ -99,6 +131,28 @@ mixin _$HomePageStore on _HomePageStoreBase, Store {
 
   late final _$_HomePageStoreBaseActionController =
       ActionController(name: '_HomePageStoreBase', context: context);
+
+  @override
+  void setFromDate(DateTime? value) {
+    final _$actionInfo = _$_HomePageStoreBaseActionController.startAction(
+        name: '_HomePageStoreBase.setFromDate');
+    try {
+      return super.setFromDate(value);
+    } finally {
+      _$_HomePageStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setToDate(DateTime? value) {
+    final _$actionInfo = _$_HomePageStoreBaseActionController.startAction(
+        name: '_HomePageStoreBase.setToDate');
+    try {
+      return super.setToDate(value);
+    } finally {
+      _$_HomePageStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void init() {
@@ -118,7 +172,9 @@ news: ${news},
 newsList: ${newsList},
 loading: ${loading},
 page: ${page},
-searchController: ${searchController}
+searchController: ${searchController},
+fromDate: ${fromDate},
+toDate: ${toDate}
     ''';
   }
 }

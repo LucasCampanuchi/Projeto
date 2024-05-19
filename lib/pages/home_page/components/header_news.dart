@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:projeto_teste/pages/home_page/components/field_data.dart';
 import 'package:projeto_teste/pages/home_page/store/home_page.store.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
-class HeaderNews extends StatelessWidget {
+class HeaderNews extends StatefulWidget {
   final HomePageStore store;
   const HeaderNews({
     super.key,
@@ -10,10 +12,16 @@ class HeaderNews extends StatelessWidget {
   });
 
   @override
+  State<HeaderNews> createState() => _HeaderNewsState();
+}
+
+class _HeaderNewsState extends State<HeaderNews> {
+  bool expanded = false;
+
+  @override
   Widget build(BuildContext context) {
-    return Skeletonizer(
-      enabled: store.news == null,
-      child: Padding(
+    return Observer(builder: (_) {
+      return Padding(
         padding: const EdgeInsets.only(
           left: 10,
           right: 10,
@@ -26,34 +34,86 @@ class HeaderNews extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    'Exibindo ${store.newsList.isNotEmpty ? 1 : 0} de ${store.newsList.length}',
+                    'Exibindo ${widget.store.newsList.isNotEmpty ? 1 : 0} de ${widget.store.newsList.length}',
+                    style: GoogleFonts.openSans(
+                      color: Colors.black,
+                    ),
                   ),
                 ),
                 Text(
-                  '${store.news?.count} resultados',
+                  '${widget.store.news?.count ?? 0} resultados',
+                  style: GoogleFonts.openSans(
+                    color: Colors.black,
+                  ),
                 ),
               ],
             ),
             const SizedBox(height: 10),
-            TextField(
-              controller: store.searchController,
-              decoration: InputDecoration(
-                hintText: 'Pesquisar notícias',
-                suffixIcon: InkWell(
-                  onTap: () {
-                    FocusScope.of(context).unfocus();
-                    store.init();
-                  },
-                  child: const Icon(
-                    Icons.search,
-                    color: Color(0xFFD5D5D5),
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: widget.store.searchController,
+                    onEditingComplete: () {
+                      FocusScope.of(context).unfocus();
+                      widget.store.init();
+                    },
+                    decoration: InputDecoration(
+                      hintText: 'Pesquisar notícias',
+                      suffixIcon: InkWell(
+                        onTap: () {
+                          FocusScope.of(context).unfocus();
+                          widget.store.init();
+                        },
+                        child: const Icon(
+                          Icons.search,
+                          color: Color(0xFFD5D5D5),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: InkWell(
+                    onTap: () {
+                      setState(() {
+                        expanded = !expanded;
+                      });
+                    },
+                    child: const Icon(
+                      Icons.filter_list,
+                      color: Colors.black,
+                    ),
+                  ),
+                )
+              ],
             ),
+            const SizedBox(height: 10),
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              height: expanded ? 40 : 0,
+              child: SingleChildScrollView(
+                child: Row(
+                  children: [
+                    FieldDate(
+                      label: 'De',
+                      date: widget.store.fromDate ?? '-',
+                      onChanged: (value) => widget.store.setFromDate(value),
+                    ),
+                    const SizedBox(width: 10),
+                    FieldDate(
+                      label: 'Até',
+                      date: widget.store.toDate ?? '-',
+                      onChanged: (value) => widget.store.setToDate(value),
+                    ),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
-      ),
-    );
+      );
+    });
   }
 }

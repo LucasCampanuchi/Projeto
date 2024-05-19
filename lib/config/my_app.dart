@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:projeto_teste/themes/app_theme.dart';
 
 import '../pages/home_page/view/home_page.dart';
@@ -20,6 +21,14 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.light,
       initialRoute: isLogged ? '/home' : '/',
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('pt', 'BR'),
+      ],
       routes: {
         '/': (context) => const LoginPage(),
         '/home': (context) => const HomePage(),

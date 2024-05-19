@@ -69,37 +69,50 @@ class _HomePageState extends State<HomePage> {
               HeaderNews(
                 store: store,
               ),
-              Expanded(
-                child: RefreshIndicator(
-                  onRefresh: () async {
-                    store.init();
-                  },
-                  child: SingleChildScrollView(
-                    controller: _scrollController,
-                    child: Column(
-                      children: [
-                        ...List.generate(
-                          store.newsList.length,
-                          (index) {
-                            final news = store.newsList[index];
-
-                            return CardNews(
-                              news: news,
-                            );
-                          },
-                        ),
-                        if (store.loading)
+              if (store.news == null && !store.loading)
+                const Expanded(
+                  child: Center(
+                    child: Text(
+                      'Erro ao carregar notícias!',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                )
+              else
+                Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      store.init();
+                    },
+                    child: SingleChildScrollView(
+                      controller: _scrollController,
+                      child: Column(
+                        children: [
                           ...List.generate(
-                            5,
+                            store.newsList.length,
                             (index) {
-                              return const CardNewsSkeleton();
+                              final news = store.newsList[index];
+
+                              return CardNews(
+                                news: news,
+                              );
                             },
                           ),
-                      ],
+                          if (store.loading)
+                            ...List.generate(
+                              5,
+                              (index) {
+                                return const CardNewsSkeleton();
+                              },
+                            ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
             ],
           ),
         );

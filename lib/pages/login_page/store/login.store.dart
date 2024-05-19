@@ -32,15 +32,6 @@ abstract class _LoginStoreBase with Store {
   @action
   Future<void> login(BuildContext context) async {
     if (formKey.currentState!.validate()) {
-      if (emailController.text != 'teste@gmail.com' &&
-          passwordController.text != '123456') {
-        message(
-          'Email ou senha inválidos',
-        );
-
-        return;
-      }
-
       loading = true;
 
       await Future.delayed(
@@ -48,6 +39,15 @@ abstract class _LoginStoreBase with Store {
       );
 
       loading = false;
+
+      if (emailController.text != 'teste@gmail.com' ||
+          passwordController.text != '123456') {
+        message(
+          'Email ou senha inválidos',
+        );
+
+        return;
+      }
 
       SharedPreferencesService sharedPreferencesService =
           SharedPreferencesService();

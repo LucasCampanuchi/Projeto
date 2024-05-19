@@ -53,6 +53,24 @@ class CardNews extends StatelessWidget {
                       fontSize: 16,
                     ),
                   ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        news.dataPublicacao,
+                        style: const TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+                      Text(
+                        news.produtoId.toString(),
+                        style: const TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             )

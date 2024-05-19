@@ -20,6 +20,7 @@ final ThemeData appTheme = ThemeData(
   inputDecorationTheme: InputDecorationTheme(
     hintStyle: GoogleFonts.openSans(
       fontSize: 14,
+      color: Colors.grey[500],
     ),
     filled: true,
     fillColor: Colors.white, // Background color
